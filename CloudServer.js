@@ -34,8 +34,11 @@ var tmp;
 
 var commands = ["Save", "Get"];
 
+//Insert your cloud var names here
 var Interface1 = "☁ Interface1";
 var Interface2 = "☁ Interface2";
+var Command = "☁ Command";
+var Trigger = "☁ Trigger";
 
 
 
@@ -196,16 +199,16 @@ Scratch.UserSession.load(function(err, user) {
     user.cloudSession(PROJ_ID, function(err, cloud) {
 
     	cloud.on("set", function(name, val) {		
-    		if(name=="☁ Trigger") console.log("Server"+getTimeStamp()+" "+name+": "+val);
-    		if(name=="☁ Trigger" && val==1){
+    		if(name==Trigger) console.log("Server"+getTimeStamp()+" "+name+": "+val);
+    		if(name==Trigger && val==1){
 
     			cloud.set(name, 2); // Tell server we are processing...
 
-    			mode = cloud.get("☁ Command");
+    			mode = cloud.get(Command);
 
-    			username = decode(cloud.get("☁ Interface1"));
+    			username = decode(cloud.get(Interface1));
     			if(mode==1){
-    				sentData = decode(cloud.get("☁ Interface2"));
+    				sentData = decode(cloud.get(Interface2));
     			}
 
     			log(commands[mode]+": "+username);
@@ -219,7 +222,7 @@ Scratch.UserSession.load(function(err, user) {
     					} else {
     						modifyData(username, sentData);
     					}
-    					cloud.set("☁ Interface1", encode("Data saved offline."));
+    					cloud.set(Interface1, encode("Data saved offline."));
     					break;
 
     				case 2:
@@ -227,10 +230,10 @@ Scratch.UserSession.load(function(err, user) {
     					tmp = getUserData(username);
     					if(tmp==-1){
     						log("Error: User does not exist");
-    						cloud.set("☁ Interface1", encode("Error: User does not exist"));
+    						cloud.set(Interface1, encode("Error: User does not exist"));
     					} else {
     						log("Got: "+tmp);
-    						cloud.set("☁ Interface1", encode(tmp));
+    						cloud.set(Interface1, encode(tmp));
     					}
     					break;
 
